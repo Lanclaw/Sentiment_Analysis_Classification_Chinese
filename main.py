@@ -15,6 +15,7 @@ def train(train_dataloader, model, device, epoches=Config.n_epoches, lr=Config.l
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     loss_func = nn.CrossEntropyLoss()
 
+    best_acc = 0.85
     for epoch in range(epoches):
         train_loss = 0
         correct = 0
@@ -44,11 +45,16 @@ def train(train_dataloader, model, device, epoches=Config.n_epoches, lr=Config.l
             )}
             train_dataloader.set_postfix(log=postfix)
 
+        acc = eval.val_acc(val_loader, model, device)
+        if acc > best_acc:
+            best_acc_acc = acc
+            torch.save(model, Config.model_path)
+
 
 if __name__ == '__main__':
     word2id = DataProcess.build_word2id()
     word2vec = torch.from_numpy(DataProcess.build_word2vec(word2id)).float()
-    model = model.LSTM(word2vec)
+    model = model.LSTM_attention(word2vec)
     print(model)
     train_data, train_label, val_data, val_label, test_data, test_label = DataProcess.prepare_data(word2id)
     train_loader = DataProcess.Data_set(train_data, train_label)
@@ -58,6 +64,6 @@ if __name__ == '__main__':
     test_loader = DataProcess.Data_set(test_data, test_label)
     test_loader = DataLoader(test_loader, batch_size=Config.batch_size, shuffle=True)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    train(train_loader, model, device, epoches=1)
-    eval.val_acc(val_loader, model, device)
+    train(train_loader, model, device, epoches=2)
 
+    eval.predict(word2id, model)

@@ -7,7 +7,7 @@ class Config():
     word2vec_path = './data/word2vec.txt'
     pre_word2vec_path = './data/wiki_word2vec_50.bin'
     corpus_word2vec_path = './data/word_vec.txt'
-    model_state_dict_path = './data/sen_model.pkl'   # 训练模型保存的地址
+    model_state_dict_path = './data/model_state_dict.pkl'   # 训练模型保存的地址
     stopword_path = './data/stopword.txt'
     embeding_size = 50
     max_seq_len = 65
@@ -26,5 +26,6 @@ class Config():
     lr = 0.0001
     batch_size = 64
     n_epoches = 32
+    model_path = './data/model.pkl'
 
 

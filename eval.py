@@ -32,7 +32,7 @@ def val_acc(val_loader, model, device):
             recall = recall_score(label.cpu(), pred.cpu(), average='micro')
         print('val_loss: {:.3f}, val_acc: {:.3f}, f1_score: {:.3f}, recall_score: {:.3f}'.format(
             val_loss / (i + 1), 100 * correct / total, f1, recall))
-        return 100 * correct / total
+        return correct / total
 
 
 def test_acc(test_loader, model, device):
